@@ -1,0 +1,25 @@
+{
+    "name": "pomm-project/pomm-profiler-service-provider",
+    "type": "library",
+    "description":  "Pomm Profiler Service Provider shared files.",
+    "keywords": ["silex", "symfony","pomm", "debug", "profiler"],
+    "homepage": "http://www.pomm-project.org",
+    "license":  "MIT",
+    "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
+    "require": {
+        "pomm-project/foundation": "2.0.*@dev",
+        "symfony/http-foundation": "~2.5",
+        "symfony/http-kernel": "~2.5"
+    },
+    "suggest": {
+        "pomm-project/model-manager": "2.0.*@dev",
+        "pomm-project/cli": "2.0.*@dev",
+        "silex/silex": "~1.0",
+        "symfony/symfony": "~2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "PommProject\\SymfonyBridge\\": "sources/lib"
+        }
+    }
+}
