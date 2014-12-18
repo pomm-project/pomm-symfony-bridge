@@ -1,7 +1,7 @@
 {
-    "name": "pomm-project/pomm-profiler-service-provider",
+    "name": "pomm-project/pomm-symfony-bridge",
     "type": "library",
-    "description":  "Pomm Profiler Service Provider shared files.",
+    "description":  "Pomm2 shared elements between Silex and Symfony.",
     "keywords": ["silex", "symfony","pomm", "debug", "profiler"],
     "homepage": "http://www.pomm-project.org",
     "license":  "MIT",
