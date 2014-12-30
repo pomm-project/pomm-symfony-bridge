@@ -1,0 +1,17 @@
+{% extends '@Pomm/Profiler/pomm_layout.html.twig' %}
+
+{% block panel %}
+    <h2>Query</h2>
+    {% set query = collector.queries[query_index] %}
+    <code id="code-{{ query_index }}" style="font-size: 14px;">
+        {{ query.sql|sql_format|raw }}
+    </code>
+    <hr />
+    <h2>Plan</h2>
+    <code style="font-size: 14px;"><pre>
+    {% for i, line in explain %}
+    <span>{{ "%02d"|format(i) }}</span> | <span>{{ line['QUERY PLAN'] }}</span>
+    {% endfor %}
+    </pre></code>
+{% endblock %}
+

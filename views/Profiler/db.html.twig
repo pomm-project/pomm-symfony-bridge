@@ -1,40 +1,4 @@
-{% extends '@WebProfiler/Profiler/layout.html.twig' %}
-
-{% block toolbar%}
-    {% set icon %}
-        <span>
-            <img height="28" alt="Pomm" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfeDBIQIivMKLn6AAADOUlEQVRIx52UXWyTVRjHf+9H9/bTtlv31WKHtGMfoN0kgkEJGDVEvUDix4UxmuyaK7kxMcHoxRLjDXJBjNELDWgV4pVIjAZrSIjEUBnLxuY2N7sVuq2l9GO0fftxvNveZS8J9H91cs55fuf/PP/kSKxrz0u+Y/aqSg/30ClzExkhHShfXapMPTPT9k82c7ICfUxjlLqxVB6VX1Z4ml9Q0BlEw0KaAjpV+kgszF/8+LsTl6eJMGYAKBtLR0Q9skQ7HcTRuIlGHisat3AQ4ZIn9JTllX7btT+X6/dxMESex3FxLuX+NS/VpDZ0EcLb6Qju7lmwLuEm2HHhxEC68/OYwEyfjkTFe2KH2Hd58/6QEj/03M97G4fEJ+J5sT+1PwzX1k/ljYtuoozzLI+pIdUIuF5/Mibecp9arndTorWz/xjsMQOcYoICKxSY2+Iudtc/6h37nX1kWDwsWjED9NMGZMly0qTBr1cq5/+lHT/hwPQOU8Ayd7hLmlXOmM5oPL69+htuBpyftZum8D7z/MheVvkSyQTgyib1suUSc1LAZergLBk86EyYloPV4pPtdNHCZM0U4CJBHxP8x+umgA+CVqsDD5OVTNYUEGOSn3iEEc6blAvJcXBVUlFoLW5LQXjrDGwUyBGnC7GpCTc54J0DE0dleplCG5NmYHarAw8qKk4uim8axrdzwMHDydOZjiJ5qshnr9TCZi3o+AlgISTetXptF+xD9lftTudu19EXB39IfN+xSwO2UYo1voXu9SqD18CI+EpGwk+aIi/Qwt9U8ZLDSwKFPqqoszdeS94w+jM46KWHGioFBDamKJDFS4o7FFCokswFz+16c3P5pv9gbrh0xMEiHnK0M0yRCjJ1rMhrLX81zuRH66ejCfiQP8z/gxA7GSXJ4rh2XJOu0ouVkqysyBUlLTKzNbAD8BH3UXCkW7whnhD+KzyEDDNo4KVIK4r0tvrgAMPVMBoRKswYQnooB8tM4aOMTLQ5QIl7+EnRoEFTLVQI8AW3gVpzDjIcZyclNDLNASL0s4oOeJsDDOCkxDC1ZlPwoeLDhizWmgOsqYISceq2weZSuDVfjnbpZVVbuK0+eBD/A5jxGjsUNjP/AAAAAElFTkSuQmCC" />
-            <span class="sf-toolbar-status{% if 50 < collector.querycount %} sf-toolbar-status-yellow{% endif %}">{{ collector.querycount }}</span>
-            {% if collector.querycount > 0 %}
-                <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f'|format(collector.time) }} ms</span>
-            {% endif %}
-        </span>
-    {% endset %}
-
-    {% set text %}
-        <div class="sf-toolbar-info-piece">
-            <b>DB Queries</b>
-            <span>{{ collector.querycount }}</span>
-        </div>
-        <div class="sf-toolbar-info-piece">
-            <b>Query time</b>
-            <span>{{ '%0.2f'|format(collector.time) }} ms</span>
-        </div>
-    {% endset %}
-
-    {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url } %}
-{% endblock %}
-
-{% block menu %}
-    <span class="label">
-        <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfeDBIQIivMKLn6AAADOUlEQVRIx52UXWyTVRjHf+9H9/bTtlv31WKHtGMfoN0kgkEJGDVEvUDix4UxmuyaK7kxMcHoxRLjDXJBjNELDWgV4pVIjAZrSIjEUBnLxuY2N7sVuq2l9GO0fftxvNveZS8J9H91cs55fuf/PP/kSKxrz0u+Y/aqSg/30ClzExkhHShfXapMPTPT9k82c7ICfUxjlLqxVB6VX1Z4ml9Q0BlEw0KaAjpV+kgszF/8+LsTl6eJMGYAKBtLR0Q9skQ7HcTRuIlGHisat3AQ4ZIn9JTllX7btT+X6/dxMESex3FxLuX+NS/VpDZ0EcLb6Qju7lmwLuEm2HHhxEC68/OYwEyfjkTFe2KH2Hd58/6QEj/03M97G4fEJ+J5sT+1PwzX1k/ljYtuoozzLI+pIdUIuF5/Mibecp9arndTorWz/xjsMQOcYoICKxSY2+Iudtc/6h37nX1kWDwsWjED9NMGZMly0qTBr1cq5/+lHT/hwPQOU8Ayd7hLmlXOmM5oPL69+htuBpyftZum8D7z/MheVvkSyQTgyib1suUSc1LAZergLBk86EyYloPV4pPtdNHCZM0U4CJBHxP8x+umgA+CVqsDD5OVTNYUEGOSn3iEEc6blAvJcXBVUlFoLW5LQXjrDGwUyBGnC7GpCTc54J0DE0dleplCG5NmYHarAw8qKk4uim8axrdzwMHDydOZjiJ5qshnr9TCZi3o+AlgISTetXptF+xD9lftTudu19EXB39IfN+xSwO2UYo1voXu9SqD18CI+EpGwk+aIi/Qwt9U8ZLDSwKFPqqoszdeS94w+jM46KWHGioFBDamKJDFS4o7FFCokswFz+16c3P5pv9gbrh0xMEiHnK0M0yRCjJ1rMhrLX81zuRH66ejCfiQP8z/gxA7GSXJ4rh2XJOu0ouVkqysyBUlLTKzNbAD8BH3UXCkW7whnhD+KzyEDDNo4KVIK4r0tvrgAMPVMBoRKswYQnooB8tM4aOMTLQ5QIl7+EnRoEFTLVQI8AW3gVpzDjIcZyclNDLNASL0s4oOeJsDDOCkxDC1ZlPwoeLDhizWmgOsqYISceq2weZSuDVfjnbpZVVbuK0+eBD/A5jxGjsUNjP/AAAAAElFTkSuQmCC" alt="" /></span>
-        <strong>Pomm</strong>
-        <span class="count">
-            <span>{{ collector.querycount }}</span>
-            <span>{{ '%0.0f'|format(collector.time) }} ms</span>
-        </span>
-    </span>
-{% endblock %}
+{% extends '@Pomm/Profiler/pomm_layout.html.twig' %}
 
 {% block panel %}
     <h2>Queries</h2>
@@ -48,10 +12,11 @@
             {% for i, query in collector.queries %}
                 <li class="{{ cycle(['odd', 'even'], i) }}" data-extra-info="{{ '%0.2f'|format(query.time_ms) }}" data-target-id="{{ i }}">
                     <div style="margin-top: 4px" id="queryNo-{{ i }}">
-<small><strong>Parameters</strong>: {{ query.parameters|yaml_dump }} | <strong>Time</strong>: {{ '%0.2f'|format(query.time_ms) }} ms | <strong>Results</strong>: {{ query.result_count }} | <strong>Entity</strong>: {% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</small></br />
+<small><strong>Connection</strong> {% if query.session_stamp != null %}{{ query.session_stamp }}{% else %} N/A {% endif %} | <strong>Parameters</strong>: {{ query.parameters|yaml_dump }} | <strong>Time</strong>: {{ '%0.2f'|format(query.time_ms) }} ms | <strong>Results</strong>: {{ query.result_count }} | <strong>Entity</strong>: <em>{% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</em></small></br />
                         <code id="code-{{ i }}" style="font-size: 14px;">
                             {{ query.sql|sql_format|raw }}
                         </code>
+                        {% if query.session_stamp != null %}<a href="{{ path("_pomm_profiler_explain", { "token": token, "index_query": i }) }}"><button>Explain query</button></a>{% endif %}<br />
                     </div>
                 </li>
             {% endfor %}
