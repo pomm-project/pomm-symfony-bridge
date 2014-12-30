@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of Pomm's Silex™ ServiceProvider package.
+ * This file is part of Pomm's SymfonyBidge package.
  *
  * (c) 2014 Grégoire HUBERT <hubert.greg@gmail.com>
  *
