@@ -10,6 +10,7 @@
 
 namespace PommProject\SymfonyBridge;
 
+use PommProject\Foundation\Exception\SqlException;
 use PommProject\Foundation\Listener\Listener;
 use PommProject\Foundation\Session\Session;
 use PommProject\Foundation\Pomm;
@@ -108,6 +109,13 @@ class DatabaseDataCollector extends DataCollector
         }
 
         $this->data = compact('queries', 'querycount', 'time');
+
+        if ($exception instanceof SqlException) {
+            $this->data['exception'] = $exception->getMessage();
+        }
+        else {
+            $this->data['exception'] = null;
+        }
     }
 
     /**
@@ -147,6 +155,19 @@ class DatabaseDataCollector extends DataCollector
     public function getTime()
     {
         return $this->data['time'];
+    }
+
+    /**
+     * getException
+     *
+     * Return sql exception.
+     *
+     * @access public
+     * @return PommProject\Foundation\Exception\SqlException|null
+     */
+    public function getException()
+    {
+        return $this->data['exception'];
     }
 
     /**
