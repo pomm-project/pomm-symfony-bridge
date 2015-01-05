@@ -102,7 +102,9 @@ class DatabaseDataCollector extends DataCollector
 
         foreach ($queries as $query) {
             ++$querycount;
-            $time += $query['time_ms'];
+            if (isset($query['time_ms'])) {
+                $time += $query['time_ms'];
+            }
         }
 
         $this->data = compact('queries', 'querycount', 'time');
