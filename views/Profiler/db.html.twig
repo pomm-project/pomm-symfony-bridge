@@ -10,31 +10,43 @@
     {% else %}
         <ul class="alt">
             {% for i, query in collector.queries %}
-                <li
-                    class="{{ cycle(['odd', 'even'], i) }}"
-                    {% if query.time_ms is defined %}
+                {% if loop.last and collector.exception is not null %}
+                    <li
+                        class="{{ cycle(['odd', 'even'], i) }} error"
+                        data-target-id="{{ i }}"
+                    >
+                        <div style="margin-top: 4px" id="queryNo-{{ i }}">
+                            <small>
+                                <strong>Connection</strong> {% if query.session_stamp != null %}{{ query.session_stamp }}{% else %} N/A {% endif %}
+                                | <strong>Parameters</strong>: {{ query.parameters|yaml_dump }}
+                                | <strong>Entity</strong>: <em>{% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</em>
+                            </small></br />
+                            <code id="code-{{ i }}" style="font-size: 14px;">
+                                {{ collector.exception|sql_format|raw }}
+                            </code>
+                        </div>
+                    </li>
+                {% else %}
+                    <li
+                        class="{{ cycle(['odd', 'even'], i) }}"
                         data-extra-info="{{ '%0.2f'|format(query.time_ms) }}"
-                    {% endif %}
-                    data-target-id="{{ i }}"
-                >
-                    <div style="margin-top: 4px" id="queryNo-{{ i }}">
-                        <small>
-                            <strong>Connection</strong> {% if query.session_stamp != null %}{{ query.session_stamp }}{% else %} N/A {% endif %}
-                            | <strong>Parameters</strong>: {{ query.parameters|yaml_dump }}
-                            {% if query.time_ms is defined %}
+                        data-target-id="{{ i }}"
+                    >
+                        <div style="margin-top: 4px" id="queryNo-{{ i }}">
+                            <small>
+                                <strong>Connection</strong> {% if query.session_stamp != null %}{{ query.session_stamp }}{% else %} N/A {% endif %}
+                                | <strong>Parameters</strong>: {{ query.parameters|yaml_dump }}
                                 | <strong>Time</strong>: {{ '%0.2f'|format(query.time_ms) }} ms
-                            {% endif %}
-                            {% if query.result_count is defined %}
                                 | <strong>Results</strong>: {{ query.result_count }}
-                            {% endif %}
-                            | <strong>Entity</strong>: <em>{% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</em>
-                        </small></br />
-                        <code id="code-{{ i }}" style="font-size: 14px;">
-                            {{ query.sql|sql_format|raw }}
-                        </code>
-                        {% if query.session_stamp != null %}<a href="{{ path("_pomm_profiler_explain", { "token": token, "index_query": i }) }}"><button>Explain query</button></a>{% endif %}<br />
-                    </div>
-                </li>
+                                | <strong>Entity</strong>: <em>{% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</em>
+                            </small></br />
+                            <code id="code-{{ i }}" style="font-size: 14px;">
+                                {{ query.sql|sql_format|raw }}
+                            </code>
+                            {% if query.session_stamp != null %}<a href="{{ path("_pomm_profiler_explain", { "token": token, "index_query": i }) }}"><button>Explain query</button></a>{% endif %}<br />
+                        </div>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     {% endif %}
