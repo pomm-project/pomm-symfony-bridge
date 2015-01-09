@@ -62,7 +62,7 @@ class PommProfilerController
      */
     public function explainAction(Request $request, $token, $index_query)
     {
-        $panel = 'db';
+        $panel = 'pomm';
         $page  = 'home';
 
         if (!($profile = $this->profiler->loadProfile($token))) {
