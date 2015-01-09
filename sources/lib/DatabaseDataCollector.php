@@ -180,6 +180,6 @@ class DatabaseDataCollector extends DataCollector
      */
     public function getName()
     {
-        return 'db';
+        return 'pomm';
     }
 }
