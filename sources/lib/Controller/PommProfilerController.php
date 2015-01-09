@@ -71,15 +71,15 @@ class PommProfilerController
 
         $this->profiler->disable();
 
-        if (!$profile->hasCollector('db')) {
+        if (!$profile->hasCollector($panel)) {
             throw new NotFoundHttpException(sprintf('Panel "%s" is not available for token "%s".', $panel, $token));
         }
 
-        if (!array_key_exists($index_query, $profile->getCollector('db')->getQueries())) {
+        if (!array_key_exists($index_query, $profile->getCollector($panel)->getQueries())) {
             throw new \InvalidArgumentException(sprintf("No such query index '%s'.", $index_query));
         }
 
-        $query_data = $profile->getCollector('db')->getQueries()[$index_query];
+        $query_data = $profile->getCollector($panel)->getQueries()[$index_query];
 
         $explain = $this->pomm[$query_data['session_stamp']]
             ->getClientUsingPooler('query_manager', null)
