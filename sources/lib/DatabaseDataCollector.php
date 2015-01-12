@@ -20,8 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * DatabaseDataCollector
- *
  * Data collector for the database profiler.
  *
  * @package PommSymfonyBridge
@@ -35,15 +33,6 @@ class DatabaseDataCollector extends DataCollector
 {
     private $queries;
 
-    /**
-     * __construct
-     *
-     * Attach profiler actions to each query builder.
-     *
-     * @access  public
-     * @param   Pomm $pomm
-     * @return  null
-     */
     public function __construct(Pomm $pomm)
     {
         $this->queries = [];
@@ -60,15 +49,10 @@ class DatabaseDataCollector extends DataCollector
     }
 
     /**
-     * execute
+     * @param string $name
+     * @param array $data
+     * @param $session
      *
-     * Action attached to the query listener.
-     * It attaches each new query in a query stack.
-     *
-     * @access public
-     * @param  name     event name
-     * @param  array    $data
-     * @param  Session  $session
      * @return null
      */
     public function execute($name, $data, Session $session)
@@ -91,9 +75,7 @@ class DatabaseDataCollector extends DataCollector
     }
 
     /**
-     * collect
-     *
-     * @see DataCollector
+     * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
@@ -119,11 +101,8 @@ class DatabaseDataCollector extends DataCollector
     }
 
     /**
-     * getQueries
-     *
      * Return the list of queries sent.
      *
-     * @access public
      * @return array
      */
     public function getQueries()
@@ -132,11 +111,8 @@ class DatabaseDataCollector extends DataCollector
     }
 
     /**
-     * getQuerycount
-     *
      * Return the number of queries sent.
      *
-     * @access public
      * @return integer
      */
     public function getQuerycount()
@@ -145,11 +121,8 @@ class DatabaseDataCollector extends DataCollector
     }
 
     /**
-     * getTime
-     *
      * Return queries total time.
      *
-     * @access public
      * @return float
      */
     public function getTime()
@@ -158,11 +131,8 @@ class DatabaseDataCollector extends DataCollector
     }
 
     /**
-     * getException
-     *
      * Return sql exception.
      *
-     * @access public
      * @return PommProject\Foundation\Exception\SqlException|null
      */
     public function getException()
@@ -171,11 +141,8 @@ class DatabaseDataCollector extends DataCollector
     }
 
     /**
-     * getName
-     *
      * Return profiler identifier.
      *
-     * @access public
      * @return string
      */
     public function getName()
