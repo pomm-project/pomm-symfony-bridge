@@ -42,7 +42,7 @@ class PommProfilerController
      * @param \Twig_Environment     $twig            The twig environment
      * @param Pomm                  $pomm            The Pomm service
      */
-    public function __construct(UrlGeneratorInterface $generator, Profiler $profiler = null, \Twig_Environment $twig, Pomm $pomm)
+    public function __construct(UrlGeneratorInterface $generator, Profiler $profiler, \Twig_Environment $twig, Pomm $pomm)
     {
         $this->generator = $generator;
         $this->profiler  = $profiler;
