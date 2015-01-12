@@ -18,8 +18,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use PommProject\Foundation\Pomm;
 
 /**
- * PommProfilerController
- *
  * Controllers for the Pomm profiler extension.
  *
  * @package PommSymfonyBridge
@@ -34,14 +32,6 @@ class PommProfilerController
     private $twig;
     private $pomm;
 
-    /**
-     * Constructor.
-     *
-     * @param UrlGeneratorInterface $generator       The URL Generator
-     * @param Profiler              $profiler        The profiler
-     * @param \Twig_Environment     $twig            The twig environment
-     * @param Pomm                  $pomm            The Pomm service
-     */
     public function __construct(UrlGeneratorInterface $generator, Profiler $profiler, \Twig_Environment $twig, Pomm $pomm)
     {
         $this->generator = $generator;
@@ -51,13 +41,12 @@ class PommProfilerController
     }
 
     /**
-     * explainAction
-     *
      * Controller to explain a SQL query.
      *
-     * @access public
-     * @param  string   $token
-     * @param  int      $index_query
+     * @param $request
+     * @param string $token
+     * @param int $index_query
+     *
      * @return Response
      */
     public function explainAction(Request $request, $token, $index_query)
