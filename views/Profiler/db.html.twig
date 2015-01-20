@@ -22,7 +22,7 @@
                                 | <strong>Entity</strong>: <em>{% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</em>
                             </small></br />
                             <code id="code-{{ i }}" style="font-size: 14px;">
-                                {{ collector.exception|sql_format|raw }}
+                                {{ collector.exception|nl2br|raw }}
                             </code>
                         </div>
                     </li>
