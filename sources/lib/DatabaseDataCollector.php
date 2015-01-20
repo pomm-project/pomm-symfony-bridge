@@ -31,11 +31,14 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class DatabaseDataCollector extends DataCollector
 {
-    private $queries;
-
     public function __construct(Pomm $pomm)
     {
-        $this->queries = [];
+        $this->data = [
+            'time' => 0,
+            'queries' => [],
+            'exception' => null,
+        ];
+
         $callable = [$this, 'execute'];
 
         foreach ($pomm->getSessionBuilders() as $name => $builder) {
@@ -57,21 +60,14 @@ class DatabaseDataCollector extends DataCollector
      */
     public function execute($name, $data, Session $session)
     {
-        if (!in_array($name, array('query:pre', 'query:post'))) {
-            return;
+        switch ($name) {
+            case 'query:post':
+                $this->data['time'] += $data['time_ms'];
+                $data += array_pop($this->data['queries']);
+            case 'query:pre':
+                $this->data['queries'][] = $data;
+                break;
         }
-
-        if ('query:post' === $name) {
-            end($this->queries);
-            $key = key($this->queries);
-            reset($this->queries);
-
-            $this->queries[$key] += $data;
-
-            return;
-        }
-
-        $this->queries[] = $data;
     }
 
     /**
@@ -79,24 +75,8 @@ class DatabaseDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $time = 0;
-        $querycount = 0;
-        $queries = $this->queries;
-
-        foreach ($queries as $query) {
-            ++$querycount;
-            if (isset($query['time_ms'])) {
-                $time += $query['time_ms'];
-            }
-        }
-
-        $this->data = compact('queries', 'querycount', 'time');
-
         if ($exception instanceof SqlException) {
             $this->data['exception'] = $exception->getMessage();
-        }
-        else {
-            $this->data['exception'] = null;
         }
     }
 
@@ -117,7 +97,7 @@ class DatabaseDataCollector extends DataCollector
      */
     public function getQuerycount()
     {
-        return $this->data['querycount'];
+        return count($this->data['queries']);
     }
 
     /**
