@@ -15,6 +15,7 @@ use PommProject\Foundation\Listener\Listener;
 use PommProject\Foundation\Session\Session;
 use PommProject\Foundation\Pomm;
 
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -31,8 +32,9 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class DatabaseDataCollector extends DataCollector
 {
-    public function __construct(Pomm $pomm)
+    public function __construct(Pomm $pomm, Stopwatch $stopwatch = null)
     {
+        $this->stopwatch = $stopwatch;
         $this->data = [
             'time' => 0,
             'queries' => [],
@@ -67,6 +69,22 @@ class DatabaseDataCollector extends DataCollector
             case 'query:pre':
                 $this->data['queries'][] = $data;
                 break;
+        }
+
+        $this->watch($name);
+    }
+
+    private function watch($name)
+    {
+        if ($this->stopwatch !== null) {
+            switch ($name) {
+                case 'query:pre':
+                    $this->stopwatch->start('query.pomm', 'pomm');
+                    break;
+                case 'query:post':
+                    $this->stopwatch->stop('query.pomm');
+                    break;
+            }
         }
     }
 
