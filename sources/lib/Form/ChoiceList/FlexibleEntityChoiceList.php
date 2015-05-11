@@ -11,6 +11,7 @@ namespace PommProject\SymfonyBridge\Form\ChoiceList;
 
 use PommProject\Foundation\Pomm;
 use PommProject\Foundation\Session\Session;
+use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Model;
 use Symfony\Component\Form\Exception\StringCastException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
@@ -37,6 +38,8 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
 
     private $preferredChoices = [];
 
+    protected $idAsIndex = false;
+
     /**
      * Creates a new flexible entity choice list.
      *
@@ -49,6 +52,11 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
         $this->class = $class;
         $this->loaded = is_array($choices) || $choices instanceof \Traversable;
         $this->preferredChoices = $preferredChoices;
+
+        $identifier = $this->session->getModel($this->model)->getStructure()->getPrimaryKey();
+
+        if(1 == count($identifier))
+            $this->idAsIndex = true;
 
         if (!$this->loaded) {
             $choices = array();
@@ -104,6 +112,47 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
 
         return parent::getRemainingViews();
     }
+
+    public function getChoicesForValues(array $values)
+    {
+        if (empty($values)) {
+            return array();
+        }
+        /**
+         * This performance optimization reflects a common scenario:
+         * * A simple select of a model entry.
+         * * The choice option "expanded" is set to false.
+         * * The current request is the submission of the selected value.
+         *
+         * @see \Symfony\Component\Form\Extension\Core\DataTransformer\ChoicesToValuesTransformer::reverseTransform
+         * @see \Symfony\Component\Form\Extension\Core\DataTransformer\ChoiceToValueTransformer::reverseTransform
+         */
+        if (!$this->loaded) {
+            if ($this->idAsIndex) {
+                $primaryKeys = $this->session
+                    ->getModel($this->model)
+                    ->getStructure()
+                    ->getPrimaryKey();
+                $where = Where::createWhereIn($primaryKeys[0], $values);
+                $choicesQuery = $this->session->getModel($this->model)->findWhere($where);
+                $choicesByValue = array();
+                $choices = array();
+                foreach ($choicesQuery as $choice) {
+                    $value = $this->fixValue(current($this->getIdentifierValues($choice)));
+                    $choicesByValue[$value] = $choice;
+                }
+                foreach ($values as $i => $value) {
+                    if (isset($choicesByValue[$value])) {
+                        $choices[$i] = $choicesByValue[$value];
+                    }
+                }
+                return $choices;
+            }
+        }
+        $this->load();
+        return parent::getChoicesForValues($values);
+    }
+
 
     /**
      * {@inheritdoc}
