@@ -40,18 +40,25 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
 
     protected $idAsIndex = false;
 
+    protected $suffix;
+
+    protected $where;
+
     /**
      * Creates a new flexible entity choice list.
      *
      * @param PropertyAccessorInterface $propertyAccessor The reflection graph for reading property paths.
      */
-    public function __construct(Session $session, $model, $class,  $labelPath = null, $choices = null, $groupPath = null, array $preferredChoices = [], PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(Session $session, $model, $class,  $labelPath = null, $choices = null, $groupPath = null, array $preferredChoices = [], $suffix = null, Where $where = null, PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->session = $session;
         $this->model = $model;
         $this->class = $class;
         $this->loaded = is_array($choices) || $choices instanceof \Traversable;
         $this->preferredChoices = $preferredChoices;
+        $this->suffix = $suffix;
+        $this->where = $where;
+
 
         $identifier = $this->session->getModel($this->model)->getStructure()->getPrimaryKey();
 
@@ -316,9 +323,13 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
             return;
         }
 
-        $choices = $this->session
-            ->getModel($this->model)
-            ->findAll();
+        $model = $this->session
+            ->getModel($this->model);
+
+        if($this->where !== null)
+            $choices = $model->findWhere($this->where, [], $this->suffix);
+        else
+            $choices = $model->findAll($this->suffix);
 
         try {
             parent::initialize($choices, array(), array());

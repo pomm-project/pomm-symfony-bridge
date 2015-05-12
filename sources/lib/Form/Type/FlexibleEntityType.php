@@ -62,6 +62,8 @@ class FlexibleEntityType extends AbstractType
                 $options['choices'],
                 $options['group_by'],
                 $options['preferred_choices'],
+                $options['suffix'],
+                $options['where'],
                 $propertyAccessor
             );
         };
@@ -73,12 +75,14 @@ class FlexibleEntityType extends AbstractType
             'property' => null,
             'expanded' => false,
             'group_by' => null,
+            'suffix'   => null,
+            'where'    => null,
             'choices'  => null,
             'choice_list' => $choiceList
         ));
 
         $resolver->setRequired(array('model', 'class'));
-
+        $resolver->setAllowedTypes('where', array('null', 'PommProject\Foundation\Where'));
     }
 
     /**
