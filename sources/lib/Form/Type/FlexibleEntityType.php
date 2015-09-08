@@ -31,24 +31,25 @@ class FlexibleEntityType extends AbstractType
     /**
      * @var PropertyAccessorInterface
      */
-    private $propertyAccessor;
+    private $property_accessor;
 
     private $pomm;
 
-    public function __construct(Pomm $pomm, PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(Pomm $pomm, PropertyAccessorInterface $property_accessor = null)
     {
         $this->pomm = $pomm;
-        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+        $this->property_accessor = $property_accessor ?: PropertyAccess::createPropertyAccessor();
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $propertyAccessor = $this->propertyAccessor;
+        $property_accessor = $this->property_accessor;
 
-        $choiceList = function (Options $options) use ($propertyAccessor, $resolver) {
+        $choice_list = function (Options $options) use ($property_accessor) {
 
             if(isset($options['connection']) && $options['connection'] !== null)
                 $session = $this->pomm[$options['connection']];
@@ -64,7 +65,7 @@ class FlexibleEntityType extends AbstractType
                 $options['preferred_choices'],
                 $options['suffix'],
                 $options['where'],
-                $propertyAccessor
+                $property_accessor
             );
         };
 
@@ -78,7 +79,7 @@ class FlexibleEntityType extends AbstractType
             'suffix'   => null,
             'where'    => null,
             'choices'  => null,
-            'choice_list' => $choiceList
+            'choice_list' => $choice_list
         ));
 
         $resolver->setRequired(array('model', 'class'));

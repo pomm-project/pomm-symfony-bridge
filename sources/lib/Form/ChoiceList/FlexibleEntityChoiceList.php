@@ -36,9 +36,9 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
 
     protected $loaded = false;
 
-    private $preferredChoices = [];
+    private $preferred_choices = [];
 
-    protected $idAsIndex = false;
+    protected $id_as_index = false;
 
     protected $suffix;
 
@@ -49,13 +49,15 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
      *
      * @param PropertyAccessorInterface $propertyAccessor The reflection graph for reading property paths.
      */
-    public function __construct(Session $session, $model, $class,  $labelPath = null, $choices = null, $groupPath = null, array $preferredChoices = [], $suffix = null, Where $where = null, PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(Session $session, $model, $class,  $label_path = null, $choices = null,
+        $group_path = null, array $preferred_choices = [], $suffix = null, Where $where = null,
+        PropertyAccessorInterface $property_accessor = null)
     {
         $this->session = $session;
         $this->model = $model;
         $this->class = $class;
         $this->loaded = is_array($choices) || $choices instanceof \Traversable;
-        $this->preferredChoices = $preferredChoices;
+        $this->preferred_choices = $preferred_choices;
         $this->suffix = $suffix;
         $this->where = $where;
 
@@ -63,13 +65,13 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
         $identifier = $this->session->getModel($this->model)->getStructure()->getPrimaryKey();
 
         if(1 == count($identifier))
-            $this->idAsIndex = true;
+            $this->id_as_index = true;
 
         if (!$this->loaded) {
             $choices = array();
         }
 
-        parent::__construct($choices, $labelPath, $preferredChoices, $groupPath, null, $propertyAccessor);
+        parent::__construct($choices, $label_path, $preferred_choices, $group_path, null, $property_accessor);
     }
 
     /**
@@ -135,22 +137,22 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
          * @see \Symfony\Component\Form\Extension\Core\DataTransformer\ChoiceToValueTransformer::reverseTransform
          */
         if (!$this->loaded) {
-            if ($this->idAsIndex) {
-                $primaryKeys = $this->session
+            if ($this->id_as_index) {
+                $primary_keys = $this->session
                     ->getModel($this->model)
                     ->getStructure()
                     ->getPrimaryKey();
-                $where = Where::createWhereIn($primaryKeys[0], $values);
-                $choicesQuery = $this->session->getModel($this->model)->findWhere($where);
-                $choicesByValue = array();
+                $where = Where::createWhereIn($primary_keys[0], $values);
+                $choices_query = $this->session->getModel($this->model)->findWhere($where);
+                $choices_by_value = array();
                 $choices = array();
-                foreach ($choicesQuery as $choice) {
+                foreach ($choices_query as $choice) {
                     $value = $this->fixValue(current($this->getIdentifierValues($choice)));
-                    $choicesByValue[$value] = $choice;
+                    $choices_by_value[$value] = $choice;
                 }
                 foreach ($values as $i => $value) {
-                    if (isset($choicesByValue[$value])) {
-                        $choices[$i] = $choicesByValue[$value];
+                    if (isset($choices_by_value[$value])) {
+                        $choices[$i] = $choices_by_value[$value];
                     }
                 }
                 return $choices;
@@ -166,6 +168,7 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
      */
     public function getValuesForChoices(array $models)
     {
+
         if (empty($models)) {
             return array();
         }
@@ -184,17 +187,17 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
         $this->load();
 
         $values = array();
-        $availableValues = $this->getValues();
+        $available_values = $this->getValues();
 
         $choices = $this->fixChoices($models);
-        foreach ($choices as $i => $givenChoice) {
-            if (null === $givenChoice) {
+        foreach ($choices as $i => $given_choice) {
+            if (null === $given_choice) {
                 continue;
             }
 
             foreach ($this->getChoices() as $j => $choice) {
-                if ($this->isEqual($choice, $givenChoice)) {
-                    $values[$i] = $availableValues[$j];
+                if ($this->isEqual($choice, $given_choice)) {
+                    $values[$i] = $available_values[$j];
 
                     // If all choices have been assigned, skip further loops.
                     unset($choices[$i]);
@@ -227,13 +230,13 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
 
 
         $choices = $this->fixChoices($models);
-        foreach ($choices as $i => $givenChoice) {
-            if (null === $givenChoice) {
+        foreach ($choices as $i => $given_choice) {
+            if (null === $given_choice) {
                 continue;
             }
 
             foreach ($this->getChoices() as $j => $choice) {
-                if ($this->isEqual($choice, $givenChoice)) {
+                if ($this->isEqual($choice, $given_choice)) {
                     $indices[$i] = $j;
 
                     // If all choices have been assigned, skip further loops.
