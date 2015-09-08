@@ -21,8 +21,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  * Flexible entity choice list for Pomm
  *
  * @package PommSymfonyBridge
- * @copyright 2014 Grégoire HUBERT
- * @author Grégoire HUBERT
+ * @copyright 2015 Grégoire HUBERT
+ * @author Mikael Paris
  * @license X11 {@link http://opensource.org/licenses/mit-license.php}
  */
 class FlexibleEntityChoiceList extends ObjectChoiceList
@@ -49,19 +49,17 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
      *
      * @param PropertyAccessorInterface $propertyAccessor The reflection graph for reading property paths.
      */
-    public function __construct(Session $session, $model, $class,  $label_path = null, $choices = null,
+    public function __construct(Session $session, $model,  $label_path = null, $choices = null,
         $group_path = null, array $preferred_choices = [], $suffix = null, Where $where = null,
         PropertyAccessorInterface $property_accessor = null)
     {
         $this->session = $session;
         $this->model = $model;
-        $this->class = $class;
         $this->loaded = is_array($choices) || $choices instanceof \Traversable;
         $this->preferred_choices = $preferred_choices;
         $this->suffix = $suffix;
         $this->where = $where;
-
-
+        $this->class = $this->session->getModel($this->model)->getFlexibleEntityClass();
         $identifier = $this->session->getModel($this->model)->getStructure()->getPrimaryKey();
 
         if(1 == count($identifier))

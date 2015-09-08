@@ -22,7 +22,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  *
  * @package PommSymfonyBridge
  * @copyright 2014 Grégoire HUBERT
- * @author Grégoire HUBERT
+ * @author Mikael Paris
  * @license X11 {@link http://opensource.org/licenses/mit-license.php}
  */
 class FlexibleEntityType extends AbstractType
@@ -58,7 +58,6 @@ class FlexibleEntityType extends AbstractType
             return new FlexibleEntityChoiceList(
                 $session,
                 $options['model'],
-                $options['class'],
                 $options['property'],
                 $options['choices'],
                 $options['group_by'],
@@ -82,7 +81,7 @@ class FlexibleEntityType extends AbstractType
             'choice_list' => $choice_list
         ));
 
-        $resolver->setRequired(array('model', 'class'));
+        $resolver->setRequired(array('model'));
         $resolver->setAllowedTypes('where', array('null', 'PommProject\Foundation\Where'));
     }
 
