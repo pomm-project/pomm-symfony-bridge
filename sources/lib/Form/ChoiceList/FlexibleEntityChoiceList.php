@@ -27,27 +27,58 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class FlexibleEntityChoiceList extends ObjectChoiceList
 {
-
+    /**
+     * @var Session
+     */
     protected $session;
 
+    /**
+     * @var string
+     */
     protected $model;
 
+    /**
+     * @var string
+     */
     protected $class;
 
+    /**
+     * @var bool
+     */
     protected $loaded = false;
 
+    /**
+     * @var array
+     */
     private $preferred_choices = [];
 
+    /**
+     * @var bool
+     */
     protected $id_as_index = false;
 
+    /**
+     * @var string
+     */
     protected $suffix;
 
+    /**
+     * @var Where
+     */
     protected $where;
 
     /**
      * Creates a new flexible entity choice list.
      *
-     * @param PropertyAccessorInterface $propertyAccessor The reflection graph for reading property paths.
+     * @param Session                   $session
+     * @param string                    $model
+     * @param string                    $label_path
+     * @param array|\Traversable        $choices
+     * @param string                    $group_path
+     * @param array                     $preferred_choices
+     * @param string                    $suffix
+     * @param Where                     $where
+     * @param PropertyAccessorInterface $property_accessor
      */
     public function __construct(Session $session, $model,  $label_path = null, $choices = null,
         $group_path = null, array $preferred_choices = [], $suffix = null, Where $where = null,
@@ -289,15 +320,14 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
      *
      * Otherwise a new integer is generated.
      *
-     * @param mixed $model The choice to create a value for
+     * @param mixed $entity The choice to create a value for
      *
      * @return int|string A unique value without character limitations.
      */
-    protected function createValue($model)
+    protected function createValue($entity)
     {
-        return (string) current($this->getIdentifierValues($model));
+        return (string) current($this->getIdentifierValues($entity));
     }
-
 
     private function getIdentifierValues($entity)
     {
@@ -333,13 +363,10 @@ class FlexibleEntityChoiceList extends ObjectChoiceList
             $choices = $model->findAll($this->suffix);
 
         try {
-            parent::initialize($choices, array(), array());
+            parent::initialize($choices, array(), $this->preferred_choices);
             $this->loaded = true;
         } catch (StringCastException $e) {
             throw new StringCastException(str_replace('argument $labelPath', 'option "property"', $e->getMessage()), null, $e);
         }
-
-
     }
-
 }

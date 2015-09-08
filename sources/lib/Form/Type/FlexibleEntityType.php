@@ -33,8 +33,15 @@ class FlexibleEntityType extends AbstractType
      */
     private $property_accessor;
 
+    /**
+     * @var Pomm
+     */
     private $pomm;
 
+    /**
+     * @param Pomm                      $pomm
+     * @param PropertyAccessorInterface $property_accessor
+     */
     public function __construct(Pomm $pomm, PropertyAccessorInterface $property_accessor = null)
     {
         $this->pomm = $pomm;
