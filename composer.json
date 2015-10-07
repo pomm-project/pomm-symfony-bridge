@@ -7,13 +7,13 @@
     "license":  "MIT",
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
     "require": {
-        "pomm-project/foundation": "2.0.*@dev",
+        "pomm-project/foundation": "~2.0",
         "symfony/http-foundation": "~2.5",
         "symfony/http-kernel": "~2.5"
     },
     "suggest": {
-        "pomm-project/model-manager": "2.0.*@dev",
-        "pomm-project/cli": "2.0.*@dev",
+        "pomm-project/model-manager": "~2.0",
+        "pomm-project/cli": "~2.0",
         "silex/silex": "~1.0",
         "symfony/symfony": "~2.5"
     },
