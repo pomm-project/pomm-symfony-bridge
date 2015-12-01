@@ -8,14 +8,14 @@
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
     "require": {
         "pomm-project/foundation": "~2.0",
-        "symfony/http-foundation": "~2.5",
-        "symfony/http-kernel": "~2.5"
+        "symfony/http-foundation": "~2.5|~3.0",
+        "symfony/http-kernel": "~2.5|~3.0"
     },
     "suggest": {
         "pomm-project/model-manager": "~2.0",
         "pomm-project/cli": "~2.0",
         "silex/silex": "~1.0",
-        "symfony/symfony": "~2.5"
+        "symfony/symfony": "~2.5|~3.0"
     },
     "autoload": {
         "psr-4": {
