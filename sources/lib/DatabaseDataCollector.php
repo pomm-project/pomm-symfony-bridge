@@ -32,6 +32,9 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class DatabaseDataCollector extends DataCollector
 {
+    /** @var Stopwatch */
+    private $stopwatch;
+
     public function __construct(Pomm $pomm, Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
@@ -131,7 +134,7 @@ class DatabaseDataCollector extends DataCollector
     /**
      * Return sql exception.
      *
-     * @return PommProject\Foundation\Exception\SqlException|null
+     * @return \PommProject\Foundation\Exception\SqlException|null
      */
     public function getException()
     {
