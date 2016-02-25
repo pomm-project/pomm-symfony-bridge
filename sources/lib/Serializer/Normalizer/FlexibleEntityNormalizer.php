@@ -9,7 +9,7 @@
  */
 namespace PommProject\SymfonyBridge\Serializer\Normalizer;
 
-use PommProject\ModelManager\Model\FlexibleEntity;
+use PommProject\ModelManager\Model\FlexibleEntity\FlexibleEntityInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FlexibleEntityNormalizer implements NormalizerInterface
@@ -27,6 +27,6 @@ class FlexibleEntityNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof FlexibleEntity;
+        return $data instanceof FlexibleEntityInterface;
     }
 }
