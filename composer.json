@@ -9,7 +9,8 @@
     "require": {
         "pomm-project/foundation": "~2.0",
         "symfony/http-foundation": "~2.5|~3.0",
-        "symfony/http-kernel": "~2.5|~3.0"
+        "symfony/http-kernel": "~2.5|~3.0",
+        "symfony/serializer": "~2.5|~3.0"
     },
     "suggest": {
         "pomm-project/model-manager": "~2.0",
