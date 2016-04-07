@@ -13,7 +13,6 @@ namespace PommProject\SymfonyBridge;
 use PommProject\Foundation\Exception\SqlException;
 use PommProject\Foundation\Listener\Listener;
 use PommProject\Foundation\Session\Session;
-use PommProject\Foundation\Pomm;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,25 +34,18 @@ class DatabaseDataCollector extends DataCollector
     /** @var Stopwatch */
     private $stopwatch;
 
-    public function __construct(Pomm $pomm, Stopwatch $stopwatch = null)
+    public function __construct($unused = null, Stopwatch $stopwatch = null)
     {
+        if ($unused !== null) {
+            trigger_error("The parameter Pomm has been deleted for to delete the high dependency.", E_USER_DEPRECATED);
+        }
+
         $this->stopwatch = $stopwatch;
         $this->data = [
             'time' => 0,
             'queries' => [],
             'exception' => null,
         ];
-
-        $callable = [$this, 'execute'];
-
-        foreach ($pomm->getSessionBuilders() as $name => $builder) {
-            $pomm->addPostConfiguration($name, function($session) use ($callable) {
-                $session
-                    ->getClientUsingPooler('listener', 'query')
-                    ->attachAction($callable)
-                    ;
-            });
-        }
     }
 
     /**
