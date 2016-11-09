@@ -112,27 +112,27 @@ class PommExtractor implements PropertyTypeExtractorInterface
                 break;
             case 'Timestamp':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = \DateTime::class;
+                $name = 'DateTime';
                 break;
             case 'Interval':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = \DateInterval::class;
+                $name = 'DateInterval';
                 break;
             case 'Point':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = \PommProject\Foundation\Converter\Type\Point::class;
+                $name = 'PommProject\Foundation\Converter\Type\Point';
                 break;
             case 'Circle':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = \PommProject\Foundation\Converter\Type\Circle::class;
+                $name = 'PommProject\Foundation\Converter\Type\Circle';
                 break;
             case 'NumberRange':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = \PommProject\Foundation\Converter\Type\NumRange::class;
+                $name = 'PommProject\Foundation\Converter\Type\NumRange';
                 break;
             case 'TsRange':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = \PommProject\Foundation\Converter\Type\TsRange::class;
+                $name = 'PommProject\Foundation\Converter\Type\TsRange';
                 break;
             default:
                 $type = Type::BUILTIN_TYPE_OBJECT;
