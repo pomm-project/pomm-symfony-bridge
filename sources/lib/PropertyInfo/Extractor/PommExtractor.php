@@ -51,7 +51,9 @@ class PommExtractor implements PropertyTypeExtractorInterface
         $sql_type = $this->getSqlType($session, $model_name, $property);
         $pomm_type = $this->getPommType($session, $sql_type);
 
-        return $this->createPropertyType($pomm_type);
+        return [
+            $this->createPropertyType($pomm_type)
+        ];
     }
 
     /**
