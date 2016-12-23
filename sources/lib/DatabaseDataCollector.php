@@ -61,6 +61,7 @@ class DatabaseDataCollector extends DataCollector
             case 'query:post':
                 $this->data['time'] += $data['time_ms'];
                 $data += array_pop($this->data['queries']);
+                /* fall-through */
             case 'query:pre':
                 $this->data['queries'][] = $data;
                 break;

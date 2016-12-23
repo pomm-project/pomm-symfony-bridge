@@ -32,8 +32,12 @@ class PommProfilerController
     private $twig;
     private $pomm;
 
-    public function __construct(UrlGeneratorInterface $generator, Profiler $profiler, \Twig_Environment $twig, Pomm $pomm)
-    {
+    public function __construct(
+        UrlGeneratorInterface $generator,
+        Profiler $profiler,
+        \Twig_Environment $twig,
+        Pomm $pomm
+    ) {
         $this->generator = $generator;
         $this->profiler  = $profiler;
         $this->twig      = $twig;
@@ -55,7 +59,14 @@ class PommProfilerController
         $page  = 'home';
 
         if (!($profile = $this->profiler->loadProfile($token))) {
-            return new Response($this->twig->render('@WebProfiler/Profiler/info.html.twig', array('about' => 'no_token', 'token' => $token)), 200, array('Content-Type' => 'text/html'));
+            return new Response(
+                $this->twig->render(
+                    '@WebProfiler/Profiler/info.html.twig',
+                    array('about' => 'no_token', 'token' => $token)
+                ),
+                200,
+                array('Content-Type' => 'text/html')
+            );
         }
 
         $this->profiler->disable();
