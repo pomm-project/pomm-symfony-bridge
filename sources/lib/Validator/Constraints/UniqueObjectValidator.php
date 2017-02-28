@@ -12,6 +12,7 @@ namespace PommProject\SymfonyBridge\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use PommProject\Foundation\Pomm;
+use PommProject\Foundation\Where;
 
 class UniqueObjectValidator extends ConstraintValidator
 {
@@ -45,20 +46,14 @@ class UniqueObjectValidator extends ConstraintValidator
     {
         $fields         = (array) $constraint->fields;
         $model          = $constraint->model;
-        $query_string   = '';
-        $params         = [];
+        $where          = new Where();
         
         foreach ($fields as $f){
             $method = $this->getMethodName($f);
-            $params[] = $object->$method();
-            
-            if(end($fields) !== $f){
-                $query_string.= $f.' = $* AND ';
-            } else {
-                $query_string.= $f.' = $* ';
-            }
+            $where->andWhere($f.' = $*',[$object->$method()]);
         }
-        $hasObject = $this->pomm->getDefaultSession()->getModel($model)->existWhere($query_string, $params);
+        
+        $hasObject = $this->pomm->getDefaultSession()->getModel($model)->existWhere($where);
         
         if($hasObject){
             $this->context->buildViolation($constraint->message)
