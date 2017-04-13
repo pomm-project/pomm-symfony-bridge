@@ -40,7 +40,7 @@ class DatabaseCollectorConfigurator
         $callable = [$this->datacollector, 'execute'];
 
         foreach ($pomm->getSessionBuilders() as $name => $builder) {
-            $pomm->addPostConfiguration($name, function($session) use ($callable) {
+            $pomm->addPostConfiguration($name, function ($session) use ($callable) {
                 $session
                     ->getClientUsingPooler('listener', 'query')
                     ->attachAction($callable)
