@@ -143,4 +143,13 @@ class DatabaseDataCollector extends DataCollector
     {
         return 'pomm';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->stopwatch->reset();
+        $this->data = array();
+    }
 }
