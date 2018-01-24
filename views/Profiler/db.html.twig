@@ -79,7 +79,15 @@
                                 <img alt="-" src="data:image/gif;base64,R0lGODlhEgASAMQSANft94TG57Hb8GS44ez1+mC24IvK6ePx+Wa44dXs92+942e54o3L6W2844/M6dnu+P/+/l614P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAABIALAAAAAASABIAQAVCoCQBTBOd6Kk4gJhGBCTPxysJb44K0qD/ER/wlxjmisZkMqBEBW5NHrMZmVKvv9hMVsO+hE0EoNAstEYGxG9heIhCADs=" style="display: none; width: 12px; height: 12px;" />
                                 <span style="vertical-align:top">Explain query</span>
                             </a>]
+
+                                [<a href="{{ path('_pomm_profiler_graph', { 'token': token, "index_query": i}) }}" onclick="return explain(this);" style="text-decoration: none;" title="Explains the query as graph" data-target-id="graph-{{ i }}" >
+                                <img alt="+" src="data:image/gif;base64,R0lGODlhEgASAMQTANft99/v+Ga44bHb8ITG52S44dXs9+z1+uPx+YvK6WC24G+944/M6W28443L6dnu+Ge54v/+/l614P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAABMALAAAAAASABIAQAVS4DQBTiOd6LkwgJgeUSzHSDoNaZ4PU6FLgYBA5/vFID/DbylRGiNIZu74I0h1hNsVxbNuUV4d9SsZM2EzWe1qThVzwWFOAFCQFa1RQq6DJB4iIQA7" style="display: inline; width: 12px; height: 12px;" />
+                                <img alt="-" src="data:image/gif;base64,R0lGODlhEgASAMQSANft94TG57Hb8GS44ez1+mC24IvK6ePx+Wa44dXs92+942e54o3L6W2844/M6dnu+P/+/l614P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAABIALAAAAAASABIAQAVCoCQBTBOd6Kk4gJhGBCTPxysJb44K0qD/ER/wlxjmisZkMqBEBW5NHrMZmVKvv9hMVsO+hE0EoNAstEYGxG9heIhCADs=" style="display: none; width: 12px; height: 12px;" />
+                                <span style="vertical-align:top">Explain graph</span>
+                            </a>]
+
                                 <div id="explain-{{ i }}" class="loading"></div>
+                                <div id="graph-{{ i }}" class="loading"></div>
                             {% endif %}
                         </td>
                     </tr>
@@ -208,6 +216,166 @@
         }
         code.explain{
             display: block;
+        }
+
+        .explain {
+            line-height: 1.5;
+        }
+
+        table tbody .explain div {
+            margin: 0;
+        }
+
+        .explain a {
+            color: #007BFF;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .explain .progress {
+            background-color: #E9ECEF;
+            border-radius: .25rem;
+            font-size: .75rem;
+            height: 1rem;
+            overflow: hidden;
+        }
+
+        .explain .progress-bar {
+            color: black;
+        }
+
+        .explain .text-muted {
+            color: #6C757D !important;
+        }
+
+        .explain .close {
+            cursor: pointer;
+            color: #000;
+            text-shadow: 0 1px 0 #FFF;
+            opacity: .5;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+            float: right;
+        }
+
+        .explain ul {
+            position: relative;
+            padding: 1em 0;
+            white-space: nowrap;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .explain ul::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        .explain ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 1px solid #DEDEDE;
+            width: 0;
+            height: 1em;
+        }
+
+        .explain li {
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 1em .5em 0 .5em;
+            margin: 0 -4px 0 -4px;
+        }
+
+        .explain li::before, .explain li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 1px solid #DEDEDE;
+            width: 50%;
+            height: 1em;
+        }
+
+        .explain li::after {
+            right: auto;
+            left: 50%;
+            border-left: 1px solid #DEDEDE;
+        }
+
+        .explain li:only-child::after, .explain li:only-child::before {
+            display: none;
+        }
+
+        .explain li:only-child {
+            padding-top: 0;
+        }
+
+        .explain li:first-child::before, .explain li:last-child::after {
+            border: 0 none;
+        }
+
+        .explain li:last-child::before {
+            border-right: 1px solid #DEDEDE;
+            border-radius: 0 5px 0 0;
+        }
+
+        .explain li:first-child::after {
+            border-radius: 5px 0 0 0;
+        }
+
+        .explain li .node {
+            border: 1px solid #DEDEDE;
+            padding: .5em .75em;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            color: #333;
+            position: relative;
+            top: 1px;
+            box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .explain th, .explain td {
+            padding: .75rem;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .explain td:last-child {
+            white-space: normal;
+        }
+
+        .explain .rows {
+            font-size: .75rem;
+            text-align: left;
+        }
+
+        .explain .detail {
+            display: none;
+            text-align: left;
+        }
+
+        .explain .detail:target {
+            z-index: 2;
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        .explain .detail div {
+            width: 450px;
+            margin: 1em auto 0 auto;
+            background-color: white;
         }
     </style>
 {% endblock %}
