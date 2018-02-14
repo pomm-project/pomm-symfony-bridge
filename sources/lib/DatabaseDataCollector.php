@@ -34,6 +34,9 @@ class DatabaseDataCollector extends DataCollector
     /** @var Stopwatch */
     private $stopwatch;
 
+    /** @var array */
+    private $data;
+
     public function __construct($unused = null, Stopwatch $stopwatch = null)
     {
         if ($unused !== null) {
