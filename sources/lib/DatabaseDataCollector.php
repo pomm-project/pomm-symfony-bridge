@@ -41,11 +41,7 @@ class DatabaseDataCollector extends DataCollector
         }
 
         $this->stopwatch = $stopwatch;
-        $this->data = [
-            'time' => 0,
-            'queries' => [],
-            'exception' => null,
-        ];
+        $this->initData();
     }
 
     /**
@@ -150,6 +146,18 @@ class DatabaseDataCollector extends DataCollector
     public function reset()
     {
         $this->stopwatch->reset();
-        $this->data = array();
+        $this->initData();
+    }
+
+    /**
+     * Init data array
+     */
+    private function initData()
+    {
+        $this->data = [
+            'time' => 0,
+            'queries' => [],
+            'exception' => null,
+        ];
     }
 }
