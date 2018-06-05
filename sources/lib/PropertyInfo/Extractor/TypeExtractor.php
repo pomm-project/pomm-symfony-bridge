@@ -103,9 +103,13 @@ class TypeExtractor implements PropertyTypeExtractorInterface
 
         switch ($pomm_type) {
             case 'Array':
-            case 'Boolean':
+                $type = Type::BUILTIN_TYPE_ARRAY;
+                break;
             case 'String':
-                $type = strtolower($pomm_type);
+                $type = Type::BUILTIN_TYPE_STRING;
+                break;
+            case 'Boolean':
+                $type = Type::BUILTIN_TYPE_BOOL;
                 break;
             case 'Number':
                 $type = Type::BUILTIN_TYPE_INT;
