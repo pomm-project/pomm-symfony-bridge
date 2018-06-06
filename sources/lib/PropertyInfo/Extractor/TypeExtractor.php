@@ -48,6 +48,10 @@ class TypeExtractor implements PropertyTypeExtractorInterface
             $model_name = "${class}Model";
         }
 
+        if (!class_exists($model_name)) {
+            return;
+        }
+
         $sql_type = $this->getSqlType($session, $model_name, $property);
         $pomm_type = $this->getPommType($session, $sql_type);
 
