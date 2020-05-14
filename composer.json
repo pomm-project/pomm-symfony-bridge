@@ -7,6 +7,7 @@
     "license":  "MIT",
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
     "require": {
+        "php": ">=7.1",
         "pomm-project/foundation": "~2.0",
         "symfony/http-foundation": "~2.5|~3.0|~4.0|~5.0",
         "symfony/http-kernel": "~2.5|~3.0|~4.0|~5.0",

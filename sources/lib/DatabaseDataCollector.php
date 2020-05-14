@@ -59,7 +59,7 @@ class DatabaseDataCollector extends DataCollector
     {
         switch ($name) {
             case 'query:post':
-                $this->data['time'] += $data['time_ms'];
+                $this->data['time'] += (float) $data['time_ms'];
                 $data += array_pop($this->data['queries']);
                 /* fall-through */
             case 'query:pre':
@@ -87,7 +87,7 @@ class DatabaseDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null)
     {
         if ($exception instanceof SqlException) {
             $this->data['exception'] = $exception->getMessage();
