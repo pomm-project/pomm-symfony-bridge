@@ -1,0 +1,97 @@
+{% macro progress(percent, title) %}
+    <div class="progress">
+        <div
+            class="progress-bar"
+            role="progressbar"
+            style="width: {{ percent }}%; background-color: {{ color(percent) }};"
+            ria-valuenow="{{ percent }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+        >{{ title }}</div>
+    </div>
+{% endmacro %}
+
+{% macro info(data) %}
+    <div class="info">
+        {% if data['Node Type'] == 'Sort' and data['Sort Key'] is defined %}
+            <span class="text-muted">by</span> {{ data['Sort Key'] | join(',') }}
+        {% elseif data['Node Type'] == 'Aggregate' and data['Group Key'] is defined %}
+            <span class="text-muted">by</span> {{ data['Group Key'] | join(',') }}
+        {% elseif data['Node Type'] == 'Seq Scan' or data['Node Type'] == 'Index Only Scan' %}
+            <span class="text-muted">on</span> {{ data['Schema'] }}.{{ data['Relation Name'] }}({{ data['Alias'] }})
+        {% elseif data['Node Type'] == 'Hash Join' %}
+            <div>
+                {% if data['Join Type'] is defined %}
+                    {{ data['Join Type'] }} <span class="text-muted">join</span>
+                {% endif %}
+            </div>
+            <div>
+                {% if data['Hash Cond'] is defined %}
+                    <span class="text-muted">on</span> {{ data['Hash Cond'] }}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro detail(data) %}
+    <div>
+        <a href="#" class="close">x</a>
+        <table class="table table-sm">
+            <tbody>
+                {% for key, value in data %}
+                    {% if key != 'Plans' %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            {% if value is same as(true) %}
+                                <td>true</td>
+                            {% elseif value is same as(false) %}
+                                <td>false</td>
+                            {% else %}
+                                <td>{{ value | join(', ') }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}
+
+{% macro plan(root, data) %}
+    {% import _self as self %}
+
+    {% set id = random() %}
+    <li>
+        <div class="node">
+            <a href="#node-{{ id }}">{{ data['Node Type'] }}</a>
+            {% set percent = data['Total Cost'] / root['Total Cost'] * 100 %}
+
+            {{ self.info(data) }}
+            {{ self.progress(percent, "Score: " ~ data['Total Cost']) }}
+            <div class="rows">Rows: {{ data['Plan Rows'] }}</div>
+            <div class="detail" id="node-{{ id }}">
+                {{ self.detail(data) }}
+            </div>
+        </div>
+
+        {% if data['Plans'] is defined %}
+            <ul>
+                {% for plan in data['Plans'] %}
+                    {{ self.plan(root, plan) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+
+{% block content %}
+    {% import _self as self %}
+
+    <div class="explain">
+        <ul>
+            {% set plan = explain.get(0)['QUERY PLAN'] %}
+            {{ self.plan(plan[0]['Plan'], plan[0]['Plan']) }}
+        </ul>
+    </div>
+{% endblock %}

@@ -55,6 +55,25 @@ class PommProfilerController
      */
     public function explainAction(Request $request, $token, $index_query)
     {
+        return $this->explain($request, $token, $index_query, 'raw');
+    }
+
+    /**
+     * Controller to explain a SQL query as graph.
+     *
+     * @param $request
+     * @param string $token
+     * @param int $index_query
+     *
+     * @return Response
+     */
+    public function graphAction(Request $request, $token, $index_query)
+    {
+        return $this->explain($request, $token, $index_query, 'json');
+    }
+
+    public function explain(Request $request, $token, $index_query, $format)
+    {
         $panel = 'pomm';
         $page  = 'home';
 
@@ -81,11 +100,24 @@ class PommProfilerController
 
         $query_data = $profile->getCollector($panel)->getQueries()[$index_query];
 
+        $explain = 'explain';
+
+        if ($format === 'json') {
+            $explain .= ' (COSTS, VERBOSE, FORMAT JSON)';
+        }
+
         $explain = $this->pomm[$query_data['session_stamp']]
             ->getClientUsingPooler('query_manager', null)
-            ->query(sprintf("explain %s", $query_data['sql']), $query_data['parameters']);
+            ->query(sprintf("%s %s", $explain, $query_data['sql']), $query_data['parameters']);
 
-        return new Response($this->twig->render('@Pomm/Profiler/explain.html.twig', array(
+        if ($format === 'json') {
+            $template = '@Pomm/Profiler/graph.html.twig';
+        }
+        else {
+            $template = '@Pomm/Profiler/explain.html.twig';
+        }
+
+        return new Response($this->twig->render($template, array(
             'token' => $token,
             'profile' => $profile,
             'collector' => $profile->getCollector($panel),
