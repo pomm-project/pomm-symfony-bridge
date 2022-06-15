@@ -6,19 +6,33 @@
     "homepage": "http://www.pomm-project.org",
     "license":  "MIT",
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../Foundation"
+        },
+        {
+            "type": "path",
+            "url": "../ModelManager"
+        }
+    ],
     "require": {
-        "php": ">=7.1",
-        "pomm-project/foundation": "~2.0",
-        "symfony/http-foundation": "~4.0|~5.0",
-        "symfony/http-kernel": "~4.4|~5.0",
-        "symfony/serializer": "~4.0|~5.0",
-        "symfony/property-info": "~4.0|~5.0"
+        "php": ">=8.1",
+        "pomm-project/foundation": "dev-php_8_1",
+        "pomm-project/model-manager": "dev-php_8_1",
+        "symfony/http-foundation": "~6.0",
+        "symfony/http-kernel": "~6.0",
+        "symfony/serializer": "~6.0",
+        "symfony/property-info": "~6.0",
+        "symfony/stopwatch": "~6.0",
+        "twig/twig": "^3.4"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "~2.7"
+        "squizlabs/php_codesniffer": "~3.7",
+        "rector/rector": "^0.13.5",
+        "phpstan/phpstan": "^1.7"
     },
     "suggest": {
-        "pomm-project/model-manager": "~2.0",
         "pomm-project/cli": "~2.0",
         "symfony/symfony": "~4.4|~5.0"
     },

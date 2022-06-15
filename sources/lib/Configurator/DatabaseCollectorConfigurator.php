@@ -9,6 +9,7 @@
  */
 namespace PommProject\SymfonyBridge\Configurator;
 
+use PommProject\Foundation\Exception\FoundationException;
 use PommProject\Foundation\Pomm;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
@@ -23,19 +24,16 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class DatabaseCollectorConfigurator
 {
-    protected $datacollector;
-
-    public function __construct(DataCollector $datacollector)
+    public function __construct(protected DataCollector $datacollector)
     {
-        $this->datacollector = $datacollector;
     }
 
     /**
      * @param Pomm $pomm
-     *
-     * @return null
+     * @return void
+     * @throws FoundationException
      */
-    public function configure(Pomm $pomm)
+    public function configure(Pomm $pomm): void
     {
         $callable = [$this->datacollector, 'execute'];
 
