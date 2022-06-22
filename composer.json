@@ -6,20 +6,10 @@
     "homepage": "http://www.pomm-project.org",
     "license":  "MIT",
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../Foundation"
-        },
-        {
-            "type": "path",
-            "url": "../ModelManager"
-        }
-    ],
     "require": {
         "php": ">=8.1",
-        "pomm-project/foundation": "dev-php_8_1",
-        "pomm-project/model-manager": "dev-php_8_1",
+        "conserto/pomm-foundation":    "dev-main",
+        "conserto/pomm-model-manager":  "dev-upgrade_php_8_1",
         "symfony/http-foundation": "~6.0",
         "symfony/http-kernel": "~6.0",
         "symfony/serializer": "~6.0",
