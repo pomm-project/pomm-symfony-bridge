@@ -1,5 +1,5 @@
 {
-    "name": "pomm-project/pomm-symfony-bridge",
+    "name": "conserto/pomm-symfony-bridge",
     "type": "library",
     "description":  "Pomm2 shared elements between Silex and Symfony.",
     "keywords": ["silex", "symfony","pomm", "debug", "profiler"],
