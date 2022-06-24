@@ -8,8 +8,8 @@
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
     "require": {
         "php": ">=8.1",
-        "conserto/pomm-foundation":    "dev-main",
-        "conserto/pomm-model-manager":  "dev-main",
+        "conserto/pomm-foundation": "3.0.x-dev",
+        "conserto/pomm-model-manager": "3.0.x-dev",
         "symfony/http-foundation": "~5.0|~6.0",
         "symfony/http-kernel": "~5.0|~6.0",
         "symfony/serializer": "~5.0|~6.0",
