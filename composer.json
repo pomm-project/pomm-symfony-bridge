@@ -9,7 +9,7 @@
     "require": {
         "php": ">=8.1",
         "conserto/pomm-foundation":    "dev-main",
-        "conserto/pomm-model-manager":  "dev-upgrade_php_8_1",
+        "conserto/pomm-model-manager":  "dev-main",
         "symfony/http-foundation": "~5.0|~6.0",
         "symfony/http-kernel": "~5.0|~6.0",
         "symfony/serializer": "~5.0|~6.0",
