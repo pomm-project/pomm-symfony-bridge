@@ -1,5 +1,5 @@
 {
-    "name": "pomm-project/pomm-symfony-bridge",
+    "name": "conserto/pomm-symfony-bridge",
     "type": "library",
     "description":  "Pomm2 shared elements between Silex and Symfony.",
     "keywords": ["silex", "symfony","pomm", "debug", "profiler"],
@@ -7,20 +7,24 @@
     "license":  "MIT",
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
     "require": {
-        "php": ">=7.1",
-        "pomm-project/foundation": "~2.0",
-        "symfony/http-foundation": "~4.0|~5.0",
-        "symfony/http-kernel": "~4.4|~5.0",
-        "symfony/serializer": "~4.0|~5.0",
-        "symfony/property-info": "~4.0|~5.0"
+        "php": ">=8.1",
+        "conserto/pomm-foundation":    "dev-main",
+        "conserto/pomm-model-manager":  "dev-upgrade_php_8_1",
+        "symfony/http-foundation": "~5.0|~6.0",
+        "symfony/http-kernel": "~5.0|~6.0",
+        "symfony/serializer": "~5.0|~6.0",
+        "symfony/property-info": "~5.0|~6.0",
+        "symfony/stopwatch": "~5.0|~6.0",
+        "twig/twig": "^3.4"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "~2.7"
+        "squizlabs/php_codesniffer": "~3.7",
+        "rector/rector": "^0.13.5",
+        "phpstan/phpstan": "^1.7"
     },
     "suggest": {
-        "pomm-project/model-manager": "~2.0",
         "pomm-project/cli": "~2.0",
-        "symfony/symfony": "~4.4|~5.0"
+        "symfony/symfony": "~5.0|~6.0"
     },
     "autoload": {
         "psr-4": {

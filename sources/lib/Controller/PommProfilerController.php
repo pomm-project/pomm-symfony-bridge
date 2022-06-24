@@ -9,13 +9,15 @@
  */
 namespace PommProject\SymfonyBridge\Controller;
 
+use PommProject\Foundation\QueryManager\QueryManagerClient;
+use PommProject\SymfonyBridge\DatabaseDataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use PommProject\Foundation\Pomm;
+use Twig\Environment;
 
 /**
  * Controllers for the Pomm profiler extension.
@@ -27,33 +29,20 @@ use PommProject\Foundation\Pomm;
  */
 class PommProfilerController
 {
-    private $generator;
-    private $profiler;
-    private $twig;
-    private $pomm;
-
-    public function __construct(
-        UrlGeneratorInterface $generator,
-        Profiler $profiler,
-        \Twig_Environment $twig,
-        Pomm $pomm
-    ) {
-        $this->generator = $generator;
-        $this->profiler  = $profiler;
-        $this->twig      = $twig;
-        $this->pomm      = $pomm;
+    public function __construct(private readonly Profiler $profiler, private readonly Environment $twig, private readonly Pomm $pomm)
+    {
     }
 
     /**
      * Controller to explain a SQL query.
      *
-     * @param $request
+     * @param Request $request
      * @param string $token
      * @param int $index_query
      *
      * @return Response
      */
-    public function explainAction(Request $request, $token, $index_query)
+    public function explainAction(Request $request, string $token, int $index_query): Response
     {
         $panel = 'pomm';
         $page  = 'home';
@@ -75,20 +64,25 @@ class PommProfilerController
             throw new NotFoundHttpException(sprintf('Panel "%s" is not available for token "%s".', $panel, $token));
         }
 
-        if (!array_key_exists($index_query, $profile->getCollector($panel)->getQueries())) {
+        /** @var DatabaseDataCollector $databaseDataCollector */
+        $databaseDataCollector = $profile->getCollector($panel);
+
+        if (!array_key_exists($index_query, $databaseDataCollector->getQueries())) {
             throw new \InvalidArgumentException(sprintf("No such query index '%s'.", $index_query));
         }
 
-        $query_data = $profile->getCollector($panel)->getQueries()[$index_query];
+        $query_data = $databaseDataCollector->getQueries()[$index_query];
 
-        $explain = $this->pomm[$query_data['session_stamp']]
-            ->getClientUsingPooler('query_manager', null)
-            ->query(sprintf("explain %s", $query_data['sql']), $query_data['parameters']);
+        /** @var QueryManagerClient $queryManager */
+        $queryManager = $this->pomm[$query_data['session_stamp']]
+            ->getClientUsingPooler('query_manager', null);
+
+        $explain = $queryManager->query(sprintf("explain %s", $query_data['sql']), $query_data['parameters']);
 
         return new Response($this->twig->render('@Pomm/Profiler/explain.html.twig', array(
             'token' => $token,
             'profile' => $profile,
-            'collector' => $profile->getCollector($panel),
+            'collector' => $databaseDataCollector,
             'panel' => $panel,
             'page' => $page,
             'request' => $request,

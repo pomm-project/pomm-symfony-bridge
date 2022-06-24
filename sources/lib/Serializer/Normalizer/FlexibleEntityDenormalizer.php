@@ -9,7 +9,11 @@
  */
 namespace PommProject\SymfonyBridge\Serializer\Normalizer;
 
+use PommProject\Foundation\Exception\FoundationException;
 use PommProject\Foundation\Pomm;
+use PommProject\ModelManager\Exception\ModelException;
+use PommProject\ModelManager\Model\FlexibleEntity\FlexibleEntityInterface;
+use PommProject\ModelManager\Session;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -22,29 +26,32 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 class FlexibleEntityDenormalizer implements DenormalizerInterface
 {
-    private $pomm;
-
-    public function __construct(Pomm $pomm)
+    public function __construct(private readonly Pomm $pomm)
     {
-        $this->pomm = $pomm;
     }
 
     /**
      * {@inheritdoc}
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @param array $context
+     * @return FlexibleEntityInterface
+     * @throws FoundationException
+     * @throws ModelException
+     * @throws \ReflectionException
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize(mixed $data, string $type, string $format = null, array $context = array()): FlexibleEntityInterface
     {
         if (isset($context['session:name'])) {
+            /** @var Session $session */
             $session = $this->pomm->getSession($context['session:name']);
         } else {
+            /** @var Session $session */
             $session = $this->pomm->getDefaultSession();
         }
 
-        if (isset($context['model:name'])) {
-            $model_name = $context['model:name'];
-        } else {
-            $model_name = "${class}Model";
-        }
+        $model_name = $context['model:name'] ?? "${type}Model";
 
         $model = $session->getModel($model_name);
         return $model->createEntity($data);
@@ -52,13 +59,13 @@ class FlexibleEntityDenormalizer implements DenormalizerInterface
 
     /**
      * {@inheritdoc}
+     * @throws \ReflectionException
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
     {
         $reflection = new \ReflectionClass($type);
         $interfaces = $reflection->getInterfaces();
 
-        // @TODO Use FlexibleEntityInterface::class with php >= 5.5
-        return isset($interfaces['PommProject\ModelManager\Model\FlexibleEntity\FlexibleEntityInterface']);
+        return isset($interfaces[FlexibleEntityInterface::class]) && is_array($data);
     }
 }

@@ -9,8 +9,10 @@
  */
 namespace PommProject\SymfonyBridge\PropertyInfo\Extractor;
 
+use PommProject\Foundation\Exception\FoundationException;
 use PommProject\Foundation\Pomm;
-use PommProject\Foundation\Session;
+use PommProject\ModelManager\Exception\ModelException;
+use PommProject\ModelManager\Session;
 use Symfony\Component\PropertyInfo\PropertyListExtractorInterface;
 
 /**
@@ -23,38 +25,38 @@ use Symfony\Component\PropertyInfo\PropertyListExtractorInterface;
  */
 class ListExtractor implements PropertyListExtractorInterface
 {
-    private $pomm;
-
-    public function __construct(Pomm $pomm)
+    public function __construct(private readonly Pomm $pomm)
     {
-        $this->pomm = $pomm;
     }
 
     /**
+     * @throws FoundationException|ModelException
      * @see PropertyListExtractorInterface
      */
-    public function getProperties($class, array $context = array())
+    public function getProperties(string $class, array $context = array()): ?array
     {
         if (isset($context['session:name'])) {
+            /** @var Session $session */
             $session = $this->pomm->getSession($context['session:name']);
         } else {
+            /** @var Session $session */
             $session = $this->pomm->getDefaultSession();
         }
 
-        if (isset($context['model:name'])) {
-            $model_name = $context['model:name'];
-        } else {
-            $model_name = "${class}Model";
-        }
+        $model_name = $context['model:name'] ?? "${class}Model";
 
         if (!class_exists($model_name)) {
-            return;
+            return null;
         }
 
         return $this->getPropertiesList($session, $model_name);
     }
 
-    private function getPropertiesList(Session $session, $model_name)
+    /**
+     * @throws ModelException
+     * @throws FoundationException
+     */
+    private function getPropertiesList(Session $session, string $model_name): array
     {
         $model = $session->getModel($model_name);
         $structure = $model->getStructure();

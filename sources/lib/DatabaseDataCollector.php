@@ -11,7 +11,6 @@
 namespace PommProject\SymfonyBridge;
 
 use PommProject\Foundation\Exception\SqlException;
-use PommProject\Foundation\Listener\Listener;
 use PommProject\Foundation\Session\Session;
 
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -31,16 +30,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class DatabaseDataCollector extends DataCollector
 {
-    /** @var Stopwatch */
-    private $stopwatch;
-
-    public function __construct($unused = null, Stopwatch $stopwatch = null)
+    public function __construct(private readonly ?Stopwatch $stopwatch = null)
     {
-        if ($unused !== null) {
-            trigger_error("The parameter Pomm has been deleted for to delete the high dependency.", E_USER_DEPRECATED);
-        }
-
-        $this->stopwatch = $stopwatch;
         $this->data = [
             'time' => 0,
             'queries' => [],
@@ -51,11 +42,11 @@ class DatabaseDataCollector extends DataCollector
     /**
      * @param string $name
      * @param array $data
-     * @param $session
+     * @param Session $session
      *
-     * @return null
+     * @return void
      */
-    public function execute($name, $data, Session $session)
+    public function execute(string $name, array $data, Session $session): void
     {
         switch ($name) {
             case 'query:post':
@@ -70,7 +61,7 @@ class DatabaseDataCollector extends DataCollector
         $this->watch($name);
     }
 
-    private function watch($name)
+    private function watch(string $name): void
     {
         if ($this->stopwatch !== null) {
             switch ($name) {
@@ -87,7 +78,7 @@ class DatabaseDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         if ($exception instanceof SqlException) {
             $this->data['exception'] = $exception->getMessage();
@@ -99,7 +90,7 @@ class DatabaseDataCollector extends DataCollector
      *
      * @return array
      */
-    public function getQueries()
+    public function getQueries(): array
     {
         return $this->data['queries'];
     }
@@ -109,9 +100,9 @@ class DatabaseDataCollector extends DataCollector
      *
      * @return integer
      */
-    public function getQuerycount()
+    public function getQuerycount(): int
     {
-        return count($this->data['queries']);
+        return is_countable($this->data['queries']) ? count($this->data['queries']) : 0;
     }
 
     /**
@@ -119,7 +110,7 @@ class DatabaseDataCollector extends DataCollector
      *
      * @return float
      */
-    public function getTime()
+    public function getTime(): float
     {
         return $this->data['time'];
     }
@@ -127,9 +118,9 @@ class DatabaseDataCollector extends DataCollector
     /**
      * Return sql exception.
      *
-     * @return \PommProject\Foundation\Exception\SqlException|null
+     * @return SqlException|null
      */
-    public function getException()
+    public function getException(): ?SqlException
     {
         return $this->data['exception'];
     }
@@ -139,17 +130,14 @@ class DatabaseDataCollector extends DataCollector
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'pomm';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
+    public function reset(): void
     {
         $this->stopwatch->reset();
-        $this->data = array();
+        $this->data = [];
     }
 }
