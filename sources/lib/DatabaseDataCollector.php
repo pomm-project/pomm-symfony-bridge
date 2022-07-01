@@ -137,7 +137,7 @@ class DatabaseDataCollector extends DataCollector
 
     public function reset(): void
     {
-        $this->stopwatch->reset();
+        $this->stopwatch?->reset();
         $this->data = [];
     }
 }
