@@ -1,29 +1,28 @@
 {
     "name": "conserto/pomm-symfony-bridge",
     "type": "library",
-    "description":  "Pomm2 shared elements between Silex and Symfony.",
-    "keywords": ["silex", "symfony","pomm", "debug", "profiler"],
+    "description":  "Pomm profiler for Symfony.",
+    "keywords": ["symfony","pomm", "debug", "profiler"],
     "homepage": "http://www.pomm-project.org",
     "license":  "MIT",
     "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
     "require": {
         "php": ">=8.1",
-        "conserto/pomm-foundation": "3.0.x-dev",
-        "conserto/pomm-model-manager": "3.0.x-dev",
+        "conserto/pomm-foundation": "^3.0",
+        "conserto/pomm-model-manager": "^3.0",
         "symfony/http-foundation": "~5.0|~6.0",
         "symfony/http-kernel": "~5.0|~6.0",
         "symfony/serializer": "~5.0|~6.0",
         "symfony/property-info": "~5.0|~6.0",
         "symfony/stopwatch": "~5.0|~6.0",
-        "twig/twig": "^3.4"
+        "twig/twig": "~3.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "~3.7",
-        "rector/rector": "^0.13.5",
-        "phpstan/phpstan": "^1.7"
+        "phpstan/phpstan": "^1.8"
     },
     "suggest": {
-        "pomm-project/cli": "~2.0",
+        "pomm-project/cli": "~3.0",
         "symfony/symfony": "~5.0|~6.0"
     },
     "autoload": {
@@ -31,9 +30,5 @@
             "PommProject\\SymfonyBridge\\": "sources/lib"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0-dev"
-        }
-    }
+    "minimum-stability": "stable"
 }

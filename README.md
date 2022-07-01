@@ -1,10 +1,10 @@
 # Pomm Symfony bridge
 
-[![Build Status](https://travis-ci.org/pomm-project/pomm-symfony-bridge.svg)](https://travis-ci.org/pomm-project/pomm-symfony-bridge) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pomm-project/pomm-symfony-bridge/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pomm-project/pomm-symfony-bridge/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/conserto/pomm-symfony-bridge/v/stable)](https://packagist.org/packages/conserto/pomm-symfony-bridge)
+![CI Status](https://github.com/conserto/pomm-symfony-bridge/actions/workflows/ci.yml/badge.svg)
 
-This package contains Pomm2 profiler shared files between Silex and the Symfony2
-full stack framework.
+This is a fork of the pomm-symfony-bridge component.
 
-Normally it should not be installed manually since it is required by either the
-pomm-project/pomm-profiler-service-provider (Silex) or the
-pomm-project/pomm-bundle (Symfony).
+This package contains Pomm profiler Symfony full stack framework.
+
+Normally it should not be installed manually since it is required by the conserto/pomm-bundle.
