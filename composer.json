@@ -22,7 +22,7 @@
         "phpstan/phpstan": "^1.8"
     },
     "suggest": {
-        "pomm-project/cli": "~3.0",
+        "conserto/pomm-cli": "~3.0",
         "symfony/symfony": "~5.0|~6.0"
     },
     "autoload": {
