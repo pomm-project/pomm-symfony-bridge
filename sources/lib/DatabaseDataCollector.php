@@ -32,11 +32,7 @@ class DatabaseDataCollector extends DataCollector
 {
     public function __construct(private readonly ?Stopwatch $stopwatch = null)
     {
-        $this->data = [
-            'time' => 0,
-            'queries' => [],
-            'exception' => null,
-        ];
+        $this->resetData();
     }
 
     /**
@@ -135,9 +131,18 @@ class DatabaseDataCollector extends DataCollector
         return 'pomm';
     }
 
+    private function resetData(): void
+    {
+        $this->data = [
+            'time' => 0,
+            'queries' => [],
+            'exception' => null,
+        ];
+    }
+
     public function reset(): void
     {
         $this->stopwatch?->reset();
-        $this->data = [];
+        $this->resetData();
     }
 }
