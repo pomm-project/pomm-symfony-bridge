@@ -45,7 +45,7 @@ class TypeExtractor implements PropertyTypeExtractorInterface
             $session = $this->pomm->getDefaultSession();
         }
 
-        $model_name = $context['model:name'] ?? "${class}Model";
+        $model_name = $context['model:name'] ?? "{$class}Model";
 
         if (!class_exists($model_name)) {
             return null;
