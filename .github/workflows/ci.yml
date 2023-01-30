@@ -45,4 +45,4 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: PHPCS
         run: |
-          ./vendor/bin/phpcs --standard=psr2 --runtime-set ignore_warnings_on_exit true --report=summary sources
+          ./vendor/bin/phpcs --standard=psr12 --runtime-set ignore_warnings_on_exit true --report=summary sources
