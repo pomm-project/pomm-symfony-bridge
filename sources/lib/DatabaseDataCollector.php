@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Pomm's SymfonyBidge package.
  *
@@ -12,7 +13,6 @@ namespace PommProject\SymfonyBridge;
 
 use PommProject\Foundation\Exception\SqlException;
 use PommProject\Foundation\Session\Session;
-
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

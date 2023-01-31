@@ -29,10 +29,14 @@ jobs:
       - name: Build
         run: |
           composer install --dev
-      - name: Setup PHP
+      - name: Setup PHP 8.1
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
       - name: PHPStan Static Analysis
         uses: php-actions/phpstan@v2
         with:
@@ -41,4 +45,4 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: PHPCS
         run: |
-          ./vendor/bin/phpcs --standard=psr2 --runtime-set ignore_warnings_on_exit true --report=summary sources
+          ./vendor/bin/phpcs --standard=psr12 --runtime-set ignore_warnings_on_exit true --report=summary sources
