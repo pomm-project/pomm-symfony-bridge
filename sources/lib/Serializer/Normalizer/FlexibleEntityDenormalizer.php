@@ -52,7 +52,7 @@ class FlexibleEntityDenormalizer implements DenormalizerInterface
             $session = $this->pomm->getDefaultSession();
         }
 
-        $model_name = $context['model:name'] ?? "${type}Model";
+        $model_name = $context['model:name'] ?? "{$type}Model";
 
         $model = $session->getModel($model_name);
         return $model->createEntity($data);
