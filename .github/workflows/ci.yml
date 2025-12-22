@@ -22,6 +22,7 @@ jobs:
     strategy:
       matrix:
         php: [ '8.4', '8.5' ]
+        symfony: [ '8.0.*' ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -32,6 +33,10 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+
+      - name: Install Symfony ${{ matrix.symfony }}
+        run: |
+          composer require symfony/http-foundation:${{ matrix.symfony }} symfony/http-kernel:${{ matrix.symfony }} symfony/serializer:${{ matrix.symfony }} symfony/property-info:${{ matrix.symfony }} symfony/stopwatch:${{ matrix.symfony }} --no-update
 
       # Runs a single command using the runners shell
       - name: Build
