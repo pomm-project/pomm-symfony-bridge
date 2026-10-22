@@ -149,7 +149,13 @@ class DatabaseDataCollector extends DataCollector
      */
     public function reset()
     {
-        $this->stopwatch->reset();
-        $this->data = array();
+        if ($this->stopwatch !== null) {
+            $this->stopwatch->reset();
+        }
+        $this->data = [
+            'time' => 0,
+            'queries' => [],
+            'exception' => null,
+        ];
     }
 }

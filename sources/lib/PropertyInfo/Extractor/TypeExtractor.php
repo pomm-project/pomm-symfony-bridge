@@ -45,7 +45,7 @@ class TypeExtractor implements PropertyTypeExtractorInterface
         if (isset($context['model:name'])) {
             $model_name = $context['model:name'];
         } else {
-            $model_name = "${class}Model";
+            $model_name = "{$class}Model";
         }
 
         if (!class_exists($model_name)) {

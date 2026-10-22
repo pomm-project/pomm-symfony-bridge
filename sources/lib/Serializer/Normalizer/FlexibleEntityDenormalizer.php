@@ -43,7 +43,7 @@ class FlexibleEntityDenormalizer implements DenormalizerInterface
         if (isset($context['model:name'])) {
             $model_name = $context['model:name'];
         } else {
-            $model_name = "${class}Model";
+            $model_name = "{$class}Model";
         }
 
         $model = $session->getModel($model_name);
