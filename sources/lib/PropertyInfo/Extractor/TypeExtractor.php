@@ -45,7 +45,7 @@ class TypeExtractor implements PropertyTypeExtractorInterface
         if (isset($context['model:name'])) {
             $model_name = $context['model:name'];
         } else {
-            $model_name = "${class}Model";
+            $model_name = "{$class}Model";
         }
 
         if (!class_exists($model_name)) {
@@ -112,7 +112,11 @@ class TypeExtractor implements PropertyTypeExtractorInterface
                 $type = Type::BUILTIN_TYPE_BOOL;
                 break;
             case 'Number':
+            case 'Integer':
                 $type = Type::BUILTIN_TYPE_INT;
+                break;
+            case 'Float':
+                $type = Type::BUILTIN_TYPE_FLOAT;
                 break;
             case 'JSON':
                 $type = Type::BUILTIN_TYPE_ARRAY;
@@ -122,31 +126,35 @@ class TypeExtractor implements PropertyTypeExtractorInterface
                 break;
             case 'Timestamp':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = 'DateTime';
+                $class = 'DateTime';
                 break;
             case 'Interval':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = 'DateInterval';
+                $class = 'DateInterval';
                 break;
             case 'Point':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = 'PommProject\Foundation\Converter\Type\Point';
+                $class = 'PommProject\Foundation\Converter\Type\Point';
                 break;
             case 'Circle':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = 'PommProject\Foundation\Converter\Type\Circle';
+                $class = 'PommProject\Foundation\Converter\Type\Circle';
+                break;
+            case 'Box':
+                $type = Type::BUILTIN_TYPE_OBJECT;
+                $class = 'PommProject\Foundation\Converter\Type\Box';
                 break;
             case 'NumberRange':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = 'PommProject\Foundation\Converter\Type\NumRange';
+                $class = 'PommProject\Foundation\Converter\Type\NumRange';
                 break;
             case 'TsRange':
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = 'PommProject\Foundation\Converter\Type\TsRange';
+                $class = 'PommProject\Foundation\Converter\Type\TsRange';
                 break;
             default:
                 $type = Type::BUILTIN_TYPE_OBJECT;
-                $name = $pomm_type;
+                $class = $pomm_type;
                 break;
         }
 

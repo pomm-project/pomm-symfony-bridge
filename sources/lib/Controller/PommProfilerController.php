@@ -35,7 +35,7 @@ class PommProfilerController
     public function __construct(
         UrlGeneratorInterface $generator,
         Profiler $profiler,
-        \Twig_Environment $twig,
+        \Twig\Environment $twig,
         Pomm $pomm
     ) {
         $this->generator = $generator;
